@@ -4,6 +4,7 @@ Information Security Simulator
 
 ----------------------------------------
 Разработал: студент группы 16ПИ1 Нагаев Михаил
+
 Developed by: student of group 16PI1 Nagaev Mikhail
 2021
 
