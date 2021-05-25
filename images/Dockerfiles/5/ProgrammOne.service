@@ -1,0 +1,8 @@
+[Unit]
+Description=ProgrammOne for Journald Lab. Good Luck you)
+
+[Service]
+ExecStart=/mnt/ExecProgrammOne
+
+[Install]
+WantedBy=multi-user.target

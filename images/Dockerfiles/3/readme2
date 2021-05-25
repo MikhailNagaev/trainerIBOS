@@ -1,0 +1,2 @@
+The program prints the following line to the end of the file '/mnt/logs_programm2':
+Programm2 start: <current time>

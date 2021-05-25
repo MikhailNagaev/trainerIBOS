@@ -1,0 +1,8 @@
+[Unit]
+Description=ProgrammTwo for Journald Lab. Nice work!
+
+[Service]
+ExecStart=/mnt/ExecProgrammTwo
+
+[Install]
+WantedBy=multi-user.target

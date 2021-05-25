@@ -1,0 +1,2 @@
+The program writes to the file /mnt/logs_programm1 how many seconds it is running every 5 seconds.
+The program does not end

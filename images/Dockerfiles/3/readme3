@@ -1,0 +1,2 @@
+The program prints the following line to the end of the file '/mnt/logs_programm3':
+File /mnt/text.txt has changed! Time: <current time>
