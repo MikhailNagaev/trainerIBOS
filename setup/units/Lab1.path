@@ -1,0 +1,5 @@
+[Path]
+PathChanged=/var/lib/docker/volumes/{0}/_data/passwd
+PathChanged=/var/lib/docker/volumes/{0}/_data/group
+[Install]
+WantedBy=multi-user.target

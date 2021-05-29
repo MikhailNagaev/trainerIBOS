@@ -1,0 +1,4 @@
+[Path]
+PathChanged=/var/lib/docker/volumes/{0}/_data/.bash_history
+[Install]
+WantedBy=multi-user.target

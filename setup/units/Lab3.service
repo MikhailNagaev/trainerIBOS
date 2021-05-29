@@ -1,0 +1,8 @@
+[Unit]
+Description= CheckLab3
+
+[Service]
+ExecStart=python3 {0}
+
+[Install]
+WantedBy=multi-user.target

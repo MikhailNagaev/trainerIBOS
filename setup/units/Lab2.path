@@ -1,0 +1,12 @@
+[Path]
+PathChanged=/var/lib/docker/volumes/{0}/_data/group
+PathChanged=/var/lib/docker/volumes/{1}/_data/{2}
+PathChanged=/var/lib/docker/volumes/{1}/_data/{3}
+PathChanged=/var/lib/docker/volumes/{1}/_data/{4}
+PathChanged=/var/lib/docker/volumes/{1}/_data/{5}
+PathChanged=/var/lib/docker/volumes/{1}/_data/{2}/text.txt
+PathChanged=/var/lib/docker/volumes/{1}/_data/{3}/text.txt
+PathChanged=/var/lib/docker/volumes/{1}/_data/{4}/text.txt
+PathChanged=/var/lib/docker/volumes/{1}/_data/{5}/text.txt
+[Install]
+WantedBy=multi-user.target

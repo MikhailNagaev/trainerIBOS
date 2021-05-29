@@ -1,0 +1,9 @@
+[Unit]
+Description= CheckLab4 train
+
+[Service]
+ExecStart=python3 {0}
+ExecStartPre=python3 {1}
+
+[Install]
+WantedBy=multi-user.target
