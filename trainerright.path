@@ -1,0 +1,5 @@
+[Path]
+PathExists=/var/lib/docker/volumes/trainerIBOS_VOLUME
+
+[Install]
+WantedBy=multi-user.target

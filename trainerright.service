@@ -1,0 +1,5 @@
+[Service] 
+ExecStart=chmod -R o+rwx /var/lib/docker/volumes
+
+[Install]
+WantedBy=multi-user.target
