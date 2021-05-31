@@ -330,7 +330,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
 
     def EndLab(self):
         self.Working = False
-        
+        self.timer.stop()   
         task = self.comboBox.currentIndex()
         if task == 0:
             codeLab, text, procent = checkLab1()
@@ -381,7 +381,6 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         if not self.radioButton_7.isChecked():
             self.textEdit.append('Время работы: ' + self.time1.toString("hh:mm:ss"))
         self.appEnabled(True)
-        self.timer.stop()   
         
         if self.radioButton_12.isChecked():
             if self.radioButton_4.isChecked():
