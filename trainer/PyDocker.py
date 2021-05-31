@@ -119,7 +119,7 @@ def startTaskControlUserAndGroup(diff, train): # Первое задание н�
         CONNECTION.append(y) 
 
     # Запись задания в соответствующий файл
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
          pickle.dump([USER_LOGIN, USER_NAME, GROUP_NAME, CONNECTION], fil)
     
     #ДЛЯ ТРЕНИРОВКИ
@@ -162,7 +162,7 @@ def killTaskControlUserAndGroup(train):
         os.system('systemctl --user daemon-reload')
         os.remove('{0}/.config/systemd/user/{1}.path'.format(os.getenv('HOME'), NAME_DOCKER_VM))
         os.remove('{0}/.config/systemd/user/{1}.service'.format(os.getenv('HOME'), NAME_DOCKER_VM))
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
     
     
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ def startChmodLab(diff, train): # Первое задание на создан�
     GROUPS = [i.rstrip() for i in random.sample(GROUP_NAME, amountGroup)]
     DIRS = [i.rstrip() for i in random.sample(DIR_NAME, amountDir)]
     
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump([diff, USERS, GROUPS, DIRS], fil)
     
     #ДЛЯ ТРЕНИРОВКИ
@@ -282,7 +282,7 @@ def startChmodLab(diff, train): # Первое задание на создан�
     
     
     
-    with open('/etc/trainerIBOS/start_script.sh', 'w') as stsc:
+    with open('/tmp/trainerIBOS/start_script.sh', 'w') as stsc:
         stsc.write('#/bin/bash\n')
         for i in USERS:
             stsc.write('useradd -s /bin/bash {}\n'.format(i))
@@ -292,10 +292,10 @@ def startChmodLab(diff, train): # Первое задание на создан�
             stsc.write('mkdir /mnt/{}\n'.format(i))
             stsc.write('touch /mnt/{}/text.txt\n'.format(i))
         
-    copy_to('/etc/trainerIBOS/start_script.sh', '{}:/home/start_script.sh'.format(NAME_DOCKER_VM))
+    copy_to('/tmp/trainerIBOS/start_script.sh', '{}:/home/start_script.sh'.format(NAME_DOCKER_VM))
     cont.exec_run('chmod 777 /home/start_script.sh')
     cont.exec_run('sh /home/start_script.sh')
-    os.remove('/etc/trainerIBOS/start_script.sh')
+    os.remove('/tmp/trainerIBOS/start_script.sh')
     
     #Создание вопросов
     que = []
@@ -326,7 +326,7 @@ def startChmodLab(diff, train): # Первое задание на создан�
     
     
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump(random.sample(que, 6), fil)
     
     
@@ -354,11 +354,11 @@ def killChmodLab(train):
         os.remove('{0}/.config/systemd/user/{1}.path'.format(os.getenv('HOME'), NAME_DOCKER_VM))
         os.remove('{0}/.config/systemd/user/{1}.service'.format(os.getenv('HOME'), NAME_DOCKER_VM))
     
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
         que = pickle.load(fil)
     dopProcent = 30.0
-    os.remove('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
     return dopProcent, que
     
     
@@ -399,7 +399,7 @@ def startSystemdLab(diff, train):
     SYSTEMD_NAMEofDESC = [[i.split('=')[0], i.split('=')[1].rstrip()] for i in random.sample(SYSTEMD_NAMEofDESC, amountSystemdNameofDesc)]
     TYPE_UNIT = [i.rstrip() for i in random.sample(TYPE_UNIT, amountTypeUnit)]
     
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump([diff, SYSTEMD_NAME, SYSTEMD_NAMEofDESC, TYPE_UNIT], fil)
     
     #----------------------------------============================  Формирование и сохранение задания  ----------------------------------============================
@@ -430,7 +430,7 @@ def startSystemdLab(diff, train):
         que_dop.append(['Какому модулю соответствует данное описание: {}?'.format(tmp_desc[i]),tmp_name, tmp_name[i]])
     
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump(random.sample(que, 3) + que_dop, fil)
     
     
@@ -519,11 +519,11 @@ def killSystemdLab(train):
         os.remove('{0}/.config/systemd/user/{1}.path'.format(os.getenv('HOME'), NAME_DOCKER_VM))
         os.remove('{0}/.config/systemd/user/{1}.service'.format(os.getenv('HOME'), NAME_DOCKER_VM))
     
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
         que = pickle.load(fil)
     dopProcent = 30.0
-    os.remove('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
     return dopProcent, que
 
 
@@ -593,7 +593,7 @@ def startNetworkLab(diff, train):
     
     os.system('x-terminal-emulator -e docker exec -it {} bash'.format(NAME_DOCKER_VM))
     
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump([diff, ip_addr, table, main_chain, second_chain, drop_protocol, prefix_drop, prefix_accept, mac_addr, [0]], fil)
     
     
@@ -628,9 +628,9 @@ def startNetworkLab(diff, train):
 1.6 Проверить таблицу маршрутизации.
 2. Добавление таблицы и цепочек межсетевого экрана nftables:
 2.1 Добавьте таблицу {1} семейства ip (ipv4):
-2.2 Добавьте в созданную таблицу цепочки {2} и {3}.
+2.2 Добавьте в созданную таблицу базовую цепочку {2} и обычную {3}.
 Цепочка {2} должна иметь тип filter, хук input, приоритет 0, политику accept.
-3. Добавьте правила фильтрации для входящих пакетов в цепочку {2}, чтобы пакеты {4} не проходили межсетевой экран.
+3. Добавьте правила фильтрации для входящих пакетов в цепочку чтобы пакеты {4} не проходили межсетевой экран.
 Добавьте логирование, используя цепочку {3} для логирования принятых пакетов с префиксом {5} и отброшенных пакетов с префиксом {6}.
 Цепочка {2} должна содержать правило перехода на цепочку {3} в случае, если входящий пакет {4}, а также правило логирования принятых пакетов.
 Цепочка {3} должна содержать правило логирования не легитимных пакетов ({4}), а также правило отбрасывания таких пакетов.
@@ -673,7 +673,7 @@ def startNetworkLab(diff, train):
     
     que.append(['Как добавить правило НЕ в конец цепочки, а после другого правила?',  ['Используя handle','Нельзя добавить правила НЕ в конец цепочки','Используя ulogd','Используя fish',],      'Используя handle'])
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump(random.sample(que, 6), fil)
     
     return deskLab
@@ -691,12 +691,12 @@ def killNetworkLab(train):
     os.remove('{0}/.config/systemd/user/{1}.path'.format(os.getenv('HOME'), NAME_DOCKER_VM))
     os.remove('{0}/.config/systemd/user/{1}.service'.format(os.getenv('HOME'), NAME_DOCKER_VM))
     
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
         que = pickle.load(fil)
     dopProcent = 20.0
-    os.remove('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
     return dopProcent, que
     
 def startJournalLab(diff, train):
@@ -726,7 +726,7 @@ def startJournalLab(diff, train):
     priority = random.choice(PRIOR)
     
     
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump([diff, user, apt_get, service, priority], fil)
     
     vol = clientDocker.volumes.create(NAME_DOCKER_VM_VOLUME)
@@ -804,7 +804,7 @@ def startJournalLab(diff, train):
     que.append(['Каково назначение журнала apt/history.log',['Хронология установки программ', 'История команд, введенных в консоль', 'Хронология загрузки системы'],        'Хронология установки программ'])
     
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump(random.sample(que, 6), fil)
 
 
@@ -822,11 +822,11 @@ def killJournalLab(train):
         os.remove('{0}/.config/systemd/user/{1}.path'.format(os.getenv('HOME'), NAME_DOCKER_VM))
         os.remove('{0}/.config/systemd/user/{1}.service'.format(os.getenv('HOME'), NAME_DOCKER_VM))
    
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
         que = pickle.load(fil)
     dopProcent = 30.0
-    os.remove('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
     return dopProcent, que   
    
 def startSSHLab(diff, train):
@@ -850,7 +850,7 @@ def startSSHLab(diff, train):
     
     fraze = random.choice(FRAZE).rstrip()
     
-    with open('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump([userMain, userSecond, fraze], fil)
     
     
@@ -920,7 +920,7 @@ IP адрес удаленной машины отличается от IP ад�
     que.append(['При удаленном доступе по SSH нужно именно IP-адрес удаленной машины?',[ 'Да, только IP-адрес', 'Нет, ещё можно по имени компьютера', 'Нет, ещё можно по PID компьютра'],        'Нет, ещё можно по имени компьютера'])
     
     
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'wb') as fil:
         pickle.dump(random.sample(que, 8), fil)
     
     return deskLab
@@ -933,9 +933,9 @@ def killSSHLab(train):
     vol.remove(force=True)
     vol2.remove(force=True)
     net.remove()
-    with open('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
+    with open('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM), 'rb') as fil:
         que = pickle.load(fil)
     dopProcent = 40.0
-    os.remove('/etc/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
-    os.remove('/etc/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.question'.format(NAME_DOCKER_VM))
+    os.remove('/tmp/trainerIBOS/{}.task'.format(NAME_DOCKER_VM))
     return dopProcent, que  

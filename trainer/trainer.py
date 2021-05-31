@@ -111,12 +111,17 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         self.timerChekExam.start(3500)
         global portProgramm
         
-        with open('/etc/trainerIBOS/runningtrainer.conf', 'w') as running:
+        try:
+            os.mkdir('/tmp/trainerIBOS')
+        except FileExistsError:
+            pass
+        
+        with open('/tmp/trainerIBOS/runningtrainer.conf', 'w') as running:
             running.write('{} {}'.format(os.getlogin(), QtCore.QTime.currentTime().toString("hh:mm")))
         
         
-        if os.path.exists('/etc/trainerIBOS/exam.conf'):
-            os.remove('/etc/trainerIBOS/exam.conf')
+        if os.path.exists('/tmp/trainerIBOS/exam.conf'):
+            os.remove('/tmp/trainerIBOS/exam.conf')
         
         
         self.radioButton_12.setEnabled(False) #--------------------------------------------------------------------------------------------------------------------
@@ -420,19 +425,19 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         else:
             reply = QtWidgets.QMessageBox.question(self, 'Внимание', "Вы уверены, что необходимо выйти?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                os.remove('/etc/trainerIBOS/runningtrainer.conf')
+                os.remove('/tmp/trainerIBOS/runningtrainer.conf')
                 self.thread.exit()
                 event.accept()
             else:
                 event.ignore() 
          
     def timerEventCheckExam(self):
-        if os.path.exists('/etc/trainerIBOS/exam.conf'):
-            with open('/etc/trainerIBOS/exam.conf', 'r') as fileExam:
+        if os.path.exists('/tmp/trainerIBOS/exam.conf'):
+            with open('/tmp/trainerIBOS/exam.conf', 'r') as fileExam:
                 for i in fileExam.read().rstrip().split(' '):
                     self.modeExam.append(i)
             self.radioButton_12.setEnabled(True)
-            os.remove('/etc/trainerIBOS/exam.conf')
+            os.remove('/tmp/trainerIBOS/exam.conf')
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  
