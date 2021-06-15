@@ -153,6 +153,9 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.action = QtWidgets.QAction(MainWindow)
+        self.action.setObjectName("action")
+        self.menuhelp.addAction(self.action)
         self.menubar.addAction(self.menuhelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -195,4 +198,5 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Время на работу:"))
         self.pushButton_2.setText(_translate("MainWindow", "Завершить выполнение работы"))
         self.menuhelp.setTitle(_translate("MainWindow", "Помощь"))
+        self.action.setText(_translate("MainWindow", "Подсказка"))
 
