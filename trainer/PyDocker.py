@@ -14,6 +14,24 @@ vol = 0
 vol2 = 0
 net = 0
 #--------------ФУНКЦИИ ПРОВЕРКИ и настройка КОНТЕЙНЕРОВ!!!!--------------
+def CheckRunningContainer():
+    for i in clientDocker.containers.list(all=True):
+        if i.name == 'trainerIBOS' or i.name == 'IBOStrainer':
+            return True
+    return False
+
+def RemoveRunningContainer():
+    bilo = False
+    for i in clientDocker.containers.list(all=True):
+        if i.name == 'trainerIBOS' or i.name == 'IBOStrainer':
+            i.remove(force=True)
+            bilo = True
+    if bilo:
+        for i in clientDocker.volumes.list():
+            if i.name == 'trainerIBOS_VOLUME' or i.name == 'trainerIBOS_VOLUME2':
+                i.remove(force=True)
+    return bilo
+
 def CheckImages():
     list_hash = dict()
     with open('/etc/trainerIBOS/check_images.conf', 'r') as FILE:

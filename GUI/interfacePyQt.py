@@ -155,7 +155,13 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
+        self.action_2 = QtWidgets.QAction(MainWindow)
+        self.action_2.setObjectName("action_2")
+        self.action_3 = QtWidgets.QAction(MainWindow)
+        self.action_3.setObjectName("action_3")
         self.menuhelp.addAction(self.action)
+        self.menuhelp.addAction(self.action_2)
+        self.menuhelp.addAction(self.action_3)
         self.menubar.addAction(self.menuhelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -199,4 +205,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Завершить выполнение работы"))
         self.menuhelp.setTitle(_translate("MainWindow", "Помощь"))
         self.action.setText(_translate("MainWindow", "Подсказка"))
+        self.action_2.setText(_translate("MainWindow", "Создать терминал контейнера"))
+        self.action_3.setText(_translate("MainWindow", "Удалить существующие контейнеры"))
 

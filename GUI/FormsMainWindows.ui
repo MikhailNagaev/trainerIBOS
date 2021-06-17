@@ -455,6 +455,8 @@ p, li { white-space: pre-wrap; }
      <string>Помощь</string>
     </property>
     <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
    </widget>
    <addaction name="menuhelp"/>
   </widget>
@@ -462,6 +464,16 @@ p, li { white-space: pre-wrap; }
   <action name="action">
    <property name="text">
     <string>Подсказка</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Создать терминал контейнера</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Удалить существующие контейнеры</string>
    </property>
   </action>
  </widget>

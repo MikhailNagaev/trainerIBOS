@@ -155,7 +155,13 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
+        self.action_2 = QtWidgets.QAction(MainWindow)
+        self.action_2.setObjectName("action_2")
+        self.action_3 = QtWidgets.QAction(MainWindow)
+        self.action_3.setObjectName("action_3")
         self.menuhelp.addAction(self.action)
+        self.menuhelp.addAction(self.action_2)
+        self.menuhelp.addAction(self.action_3)
         self.menubar.addAction(self.menuhelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -185,12 +191,12 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Тренировка - режим, в котором даются подсказки по выполнению работы. Также данный режим поддерживает информирование пользователя о завершении пунктов задания.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Самоконтроль - режим, в котором результаты приводятся после завершения работы.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Экзамен - режим, в котором результат приводяться после завершения работы. Результаты выполнения будут сохранены.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">По умолчанию данный режим недоступен. Открывается преподавателем.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Для досрочного завершения работы нажмите на кнопку \"Завершить выполнение работы\".</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Желаем успеха в обучении!</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Тренировка - режим, в котором даются подсказки по выполнению, а также контролир$</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Самоконтроль - режим, в котором результат выполнения работы подводится в конце $</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Экзамен - режим, в котором результат выполнения работы подводится в конце. Резу$</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">По умолчанию данный режим недоступен.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Для завершения работы в терминале необходимо ввести команду:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">echo EndWork</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.radioButton_10.setText(_translate("MainWindow", "Тренировка"))
         self.radioButton_11.setText(_translate("MainWindow", "Самоконтроль"))
@@ -199,4 +205,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Завершить выполнение работы"))
         self.menuhelp.setTitle(_translate("MainWindow", "Помощь"))
         self.action.setText(_translate("MainWindow", "Подсказка"))
+        self.action_2.setText(_translate("MainWindow", "Создать терминал контейнера"))
+        self.action_3.setText(_translate("MainWindow", "Удалить существующие контейнеры"))
 

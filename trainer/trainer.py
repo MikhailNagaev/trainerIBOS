@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from interfacePyQt import Ui_MainWindow 
@@ -14,8 +15,7 @@ from Lab4res import *
 from Lab5res import *
 from Lab6res import *
 
-
-portProgramm = 0 
+portProgramm = 0
 
 def TimeToAsk(question, procent):
     isx = procent
@@ -54,15 +54,17 @@ class BrowserHandler(QtCore.QObject): # Поток, ждущий сообщен�
     def run(self):
         global portProgramm
         sock = socket.socket()
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind(('localhost', portProgramm))
         sock.listen(1)
-        conn, addr = sock.accept()
         while True:
+            conn, addr = sock.accept()
             data = conn.recv(1024)
             self.slot.emit(data.decode())
-            conn, addr = sock.accept()
-        conn.close() 
-
+            if data == b'exit':
+                break
+        conn.close()
+        sock.close()
 
 
 class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс приложения
@@ -87,6 +89,10 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
             else:
                 sys.exit(0)
                 
+        if CheckRunningContainer():
+            QtWidgets.QMessageBox.question(self, 'Внимание!', "В данный момент запущены контейнеры с именами, которые должны быть зарезервированы для контейнеров тренажера. Удалите эти контейнеры вручную или с помощью специальной кнопки в меню \"Помощь\".", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+                
+        
         self.setupUi(self)
         self.pushButton.clicked.connect(self.GoToKnow)   # Задание нажатия на кнопку 
         self.comboBox.activated[int].connect(self.onChanged)      # Задание вывода при выборе в комбобокс
@@ -107,7 +113,8 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         
         
         self.action.triggered.connect(self.msgHelp)
-        
+        self.action_2.triggered.connect(self.createTerminal)
+        self.action_3.triggered.connect(self.RemoveRC)
         
         
         self.timerChekExam = QtCore.QTimer()
@@ -190,6 +197,9 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
 
 	
     def GoToKnow(self): # Слот, выполняющийся при нажати на кнопку
+        if CheckRunningContainer():
+            QtWidgets.QMessageBox.question(self, 'Внимание!', "В данный момент запущены контейнеры с именами, которые должны быть зарезервированы для контейнеров тренажера. Удалите эти контейнеры вручную или с помощью специальной кнопки в меню \"Помощь\".", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+            return 0
         task = self.comboBox.currentIndex() # Получить индекс выбора и запустить соответствующую лабу
         if task == 5:
             self.radioButton_5.setChecked(True)
@@ -286,7 +296,9 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
 
     #------------------------------------------Обработка текста из второго потока
     @QtCore.pyqtSlot(str)
-    def EnterCode(self, mess):  
+    def EnterCode(self, mess):
+        if mess == 'exit':
+            return 0
         if mess not in self.messageScriptCheck:
             self.messageScriptCheck.append(mess)
             if self.radioButton_10.isChecked():
@@ -377,6 +389,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         
         
         
+        
         if codeLab == 0:
             self.textEdit.append('Работа выполнена верно')
         else:
@@ -418,14 +431,14 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
             self.radioButton_10.setChecked(True)
             
             
-    def msgHelp(self, event):
+    def msgHelp(self):
         QtWidgets.QMessageBox.question(self, 'Помощь.', '''Тренировка - режим, в котором даются подсказки по выполнению работы. Также данный режим поддерживает информирование пользователя о завершении пунктов задания.
 Самоконтроль - режим, в котором результаты приводятся после завершения работы.
 Экзамен - режим, в котором результат приводяться после завершения работы. Результаты выполнения будут сохранены.
 По умолчанию данный режим недоступен. Открывается преподавателем.
 Для начала работы в выпадающем списке выберите необходимую тему, установите необходимые параметры, после чего нажмите на кнопку \"Начать выполнение задания\".
 Для досрочного завершения работы нажмите на кнопку \"Завершить выполнение работы\"
-ВАЖНО! Не закрывайте консоль в процессе выполнения работы. Если консоль будет закрыта, необходимо начать выполнение работы заново.
+ВАЖНО! Если закрыли консоль, в которой производилось выполнение работы, можно открыть новую с помощью соответствующей кнопки в меню \"Помощь\".
 Желаем успеха в обучении!''', QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
             
     def closeEvent(self, event):
@@ -435,12 +448,36 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow): # Класс прило�
         else:
             reply = QtWidgets.QMessageBox.question(self, 'Внимание', "Вы уверены, что необходимо выйти?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
+                sock2 = socket.socket()
+                sock2.connect(('localhost', portProgramm))
+                sock2.send(b'exit')
+                sock2.close()
                 os.remove('/tmp/trainerIBOS/runningtrainer.conf')
-                self.thread.exit()
+                QtCore.QThread.msleep(500)
+                self.thread.quit()
                 event.accept()
             else:
                 event.ignore() 
-         
+    def createTerminal(self):
+        if self.Working == True:
+            task = self.comboBox.currentIndex()
+            NAME_DOCKER_VM  = 'trainerIBOS'
+            NAME_DOCKER_VM2  = 'IBOStrainer'
+            if 0 <= task <= 5:
+                os.system('x-terminal-emulator -e docker exec -it {} bash'.format(NAME_DOCKER_VM))
+            if task == 6:
+                os.system('x-terminal-emulator -e docker exec -it {} bash'.format(NAME_DOCKER_VM2))
+        else:
+            QtWidgets.QMessageBox.question(self, 'Внимание', "Ни одна работа не запущена.", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+    def RemoveRC(self):
+        if self.Working == False:
+            if RemoveRunningContainer():
+                QtWidgets.QMessageBox.question(self, 'Внимание', "Запущенные контейнеры были удалены!", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+            else:
+                QtWidgets.QMessageBox.question(self, 'Внимание', "Не было обнаружено запущенных контейнеров.", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+        else:
+            QtWidgets.QMessageBox.question(self, 'Внимание', "Команда в данный момент недоступна, так как идет выполнение работы.", QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+            
     def timerEventCheckExam(self):
         if os.path.exists('/tmp/trainerIBOS/exam.conf'):
             with open('/tmp/trainerIBOS/exam.conf', 'r') as fileExam:
